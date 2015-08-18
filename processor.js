@@ -2,7 +2,7 @@
 // we don't use additional array because of in any case we should check/move
 // numbers throw cells, so we should check as current as neibour cell
 
-COLS = ROWS = 5;
+COLS = ROWS = 4;
 
 function game_over() {
     alert( "Game Over" );
@@ -30,7 +30,7 @@ $(window).resize( function() {
         return;
     }
     e.preventDefault();
-    $('.map').shift();
+    $('.map').shift( e.which - 37 );
 });
 
 (function($) {
@@ -75,15 +75,36 @@ $(window).resize( function() {
         return $(this);
     };
 
-    $.fn.shift = function() {
+    $.fn.shift = function( dir ) {
         map = $(this);
         rows = parseInt( map.attr( 'rows' ) );
         cols = parseInt( map.attr( 'cols' ) );
-        for( r = 0; r < rows; r++ ) {
-            for( c = 1; c < cols; c++ ) {
+        switch( dir ) {
+        case 0: // left
+            for( r = 0; r < rows; r++ ) for( c = 1; c < cols; c++ ) {
                 ci = r * cols + c;
                 check_prev( ci, ci - 1 );
             }
+            break;
+        case 2: // right
+            for( r = 0; r < rows; r++ ) for( c = cols-2; c >= 0; c-- ) {
+                ci = r * cols + c;
+                check_prev( ci, ci + 1 );
+            }
+            break;
+        case 1: // up
+            for( c = 0; c < cols; c++ ) for( r = 1; r < rows; r++ ) {
+                ci = r * cols + c;
+                check_prev( ci, ci - cols );
+            }
+            break;
+        case 3: // down
+            for( c = 0; c < cols; c++ ) for( r = rows-2; r >= 0; r-- ) {
+                ci = r * cols + c;
+                check_prev( ci, ci + cols );
+            }
+            break;
+        default: return $(this);
         }
         $(this).add_number();
         return $(this);
@@ -91,7 +112,6 @@ $(window).resize( function() {
 })(jQuery);
 
 function check_prev( ci, pi ) {
-    // in this algorithm double summing occures !!!
     cur = $('#n_' + ci );
     ct = cur.text();
     if ( ct == '' ) return;
