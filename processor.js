@@ -47,7 +47,7 @@ $(window).resize( function() {
             .attr( 'rows', options.rows ). attr( 'cols', options.cols );
         boxH = ( 100 / options.rows ) + '%';
         boxW = ( 100 / options.cols ) + '%';
-        fSize = ( 60 / options.rows ) + 'vh';
+        fSize = ( 33 / options.rows ) + 'vh';
         i = 2;
         for( r = 0; r < options.rows; r++ ) {
             row = $( '<div class="row">' ).css( 'height', boxH ).appendTo( map );
