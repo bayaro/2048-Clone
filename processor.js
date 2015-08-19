@@ -79,42 +79,65 @@ $(window).resize( function() {
         map = $(this);
         rows = parseInt( map.attr( 'rows' ) );
         cols = parseInt( map.attr( 'cols' ) );
+        check_prev = one_step;
+        check_prev = roll_down;
+        moved = false;
         switch( dir ) {
         case 0: // left
             for( r = 0; r < rows; r++ ) for( c = 1; c < cols; c++ ) {
-                ci = r * cols + c;
-                check_prev( ci, ci - 1 );
+                if ( m = check_prev( r * cols, cols, r, c, -1  ) ) moved = true;
             }
             break;
         case 2: // right
             for( r = 0; r < rows; r++ ) for( c = cols-2; c >= 0; c-- ) {
-                ci = r * cols + c;
-                check_prev( ci, ci + 1 );
+                if ( m = check_prev( ( r + 1 ) * cols - 1, cols, r, c, 1  ) ) moved = true;
             }
             break;
         case 1: // up
             for( c = 0; c < cols; c++ ) for( r = 1; r < rows; r++ ) {
-                ci = r * cols + c;
-                check_prev( ci, ci - cols );
+                if ( m = check_prev( c, cols, r, c, -cols  ) ) moved = true;
             }
             break;
         case 3: // down
             for( c = 0; c < cols; c++ ) for( r = rows-2; r >= 0; r-- ) {
-                ci = r * cols + c;
-                check_prev( ci, ci + cols );
+                if ( m = check_prev( ( rows - 1 ) * cols + c, cols, r, c, cols  ) ) moved = true;
             }
             break;
         default: return $(this);
         }
-        $(this).add_number();
+        if ( moved ) $(this).add_number();
         return $(this);
     };
 })(jQuery);
 
-function check_prev( ci, pi ) {
+var roll_down = function roll_down( down, cols, r, c, step ) {
+    ci = r * cols + c;
     cur = $('#n_' + ci );
     ct = cur.text();
     if ( ct == '' ) return;
+    pi = down;
+    while( pi != ci ) {
+        prev = $('#n_' + pi );
+        switch( prev.text() ) {
+        case ct: ct = 2 * parseInt( ct );
+        case '':
+            break;
+        default:
+            pi -= step;
+            continue;
+        }
+        prev.text( ct );
+        cur.text( '' );
+        return true;
+    }
+}
+
+var one_step = function one_step( down, cols, r, c, step ) {
+    ci = r * cols + c;
+    cur = $('#n_' + ci );
+    ct = cur.text();
+    if ( ct == '' ) return;
+    pi = ci + step;
     prev = $('#n_' + pi );
     switch( prev.text() ) {
     case ct: ct = 2 * parseInt( ct );
@@ -123,5 +146,7 @@ function check_prev( ci, pi ) {
     default: return;
     }
     prev.text( ct );
-    cur.text( '' )
+    cur.text( '' );
+    return true;
 }
+
