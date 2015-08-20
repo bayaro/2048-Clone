@@ -23,9 +23,31 @@
         text-align: center;
         vertical-align: middle;
     }
+    .gameover {
+        opacity: 0.5;
+        background: #04E;
+        text-align: center;
+        z-index: 99;
+        position: absolute;
+        font-size: 20vh;
+        color: yellow;
+        display: none;
+    }
+    .gameover div {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .gameover a {
+        display: block;
+        font-size:2rem;
+        font-weight: bold;
+        color: yellow;
+    }
     </style>
 </head>
 <body>
     <div class="map"></div>
+    <div class="gameover"><div>Game Over<a href="javascript:location.reload();">Start new one</a></div></div>
 </body>
 </html>
