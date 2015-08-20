@@ -7,8 +7,8 @@
     <style>
     .map {
         font-family: sans-serif;
-        margin: 2em auto;
-        height: 90%;
+        margin: 0 auto;
+        height: 100%;
         border: solid 1px blue;
         display: table;
         border-collapse: separate;
@@ -44,10 +44,28 @@
         font-weight: bold;
         color: yellow;
     }
+    td {
+        vertical-align: top;
+        padding: 2em;
+        text-align: left;
+    }
+    .help {
+        background: #FFFF7F;
+        padding: 1em;
+    }
     </style>
 </head>
 <body>
+<table width="100%" height="100%">
+<tr><td>
     <div class="map"></div>
     <div class="gameover"><div>Game Over<a href="javascript:location.reload();">Start new one</a></div></div>
+</td><td>
+    <div class="help">
+    <p>Please, use keyboard arrows to play.
+    <p>This is a not fully compliment realisation of <a href="http://2048game.com/">2048 Game</a> as a test task.
+    </div>
+</td></tr>
+</table>
 </body>
 </html>
