@@ -128,22 +128,28 @@ $(window).resize( function() {
         cur = $(this).find('#n_' + ci );
         ct = cur.text();
         if ( ct == '' ) return $(this);
-        pi = down;
-        while( pi != ci ) {
+        pi = ci + step;
+        la = -1;
+        while( true ) {
             prev = $(this).find('#n_' + pi );
             switch( prev.text() ) {
             case ct: ct = 2 * parseInt( ct );
-            case '':
                 break;
-            default:
-                pi -= step;
+            case '':
+                if ( pi == down ) break;
+                la = pi;
+                pi += step;
                 continue;
+            default:
+                if ( la < 0 ) return $(this);
+                prev = $(this).find('#n_' + la );
+                break;
             }
-            prev.text( ct );
-            cur.text( '' );
-            $(this).data('moved',1);
             break;
         }
+        prev.text( ct );
+        cur.text( '' );
+        $(this).data('moved',1);
         return $(this);
     };
 
